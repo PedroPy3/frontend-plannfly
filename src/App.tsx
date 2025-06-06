@@ -11,6 +11,8 @@ import SubscriptionsPage from "./pages/SubscriptionsPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./components/Dashboard";
+import SessionExpired from "./pages/SessionExpired";
+import Error500 from "./pages/Error500";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,9 @@ const App = () => (
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
           <Route path="/checkout/:subscriptionId" element={<CheckoutPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/session-expired" element={<SessionExpired />} />
+          <Route path = "/internal-error"element={<Error500 />} />
+          <Route path = "/NotFound"element={<NotFound />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
