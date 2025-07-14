@@ -13,9 +13,11 @@ import DashboardLayout from '@/components/DashboardLayout';
 const ClassesContent = () => {
   const { toast } = useToast();
 
-  const { data: classes = [], isLoading, isError } = useQuery({
+  const { data: classes = [], isLoading, isError, error } = useQuery({
     queryKey: ['classes'],
     queryFn: () => api.get('/classes/all'),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
   });
 
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
@@ -51,8 +53,70 @@ const ClassesContent = () => {
     }
   };
 
-  if (isLoading) return <p className="p-6">Carregando turmas...</p>;
-  if (isError) return <p className="p-6 text-red-500">Erro ao carregar turmas.</p>;
+  if (isLoading) {
+    return (
+      <div className="p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-muted rounded w-48 mb-2"></div>
+            <div className="h-4 bg-muted rounded w-96 mb-6"></div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-32 bg-muted rounded"></div>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-48 bg-muted rounded"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-12">
+            <div className="text-red-500 text-lg font-semibold mb-2">
+              Error loading classes
+            </div>
+            <p className="text-muted-foreground mb-4">
+              {error?.message || 'Failed to load classes. Please try again.'}
+            </p>
+            <Button onClick={() => window.location.reload()}>
+              Reload Page
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!classes || classes.length === 0) {
+    return (
+      <div className="p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold mb-2">Classes</h1>
+            <p className="text-muted-foreground">
+              Manage and view all your classes. Click on a class card to edit its details.
+            </p>
+          </div>
+          <div className="text-center py-12">
+            <BookOpenIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <div className="text-lg font-semibold mb-2">No classes found</div>
+            <p className="text-muted-foreground">
+              Your classes will appear here once they're loaded from the API.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
@@ -86,7 +150,7 @@ const ClassesContent = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {classes.reduce((sum: number, c: any) => sum + c.students, 0)}
+                {classes.reduce((sum: number, c: any) => sum + (c.students || 0), 0)}
               </div>
               <p className="text-xs text-muted-foreground">Across all classes</p>
             </CardContent>
@@ -215,8 +279,20 @@ const ClassesContent = () => {
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <p><strong>Teacher:</strong> {classItem.teacher || '—'}</p>
                     <p><strong>Students:</strong> {classItem.students || 0}</p>
-                    <p><strong>Date:</strong> {new Date(classItem.date).toLocaleString()}</p>
-                    {classItem.description && <p><strong>Description:</strong> {classItem.description}</p>}
+                    <p><strong>Date:</strong> {
+                      classItem.date 
+                        ? new Date(classItem.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
+                        : '—'
+                    }</p>
+                    {classItem.description && (
+                      <p><strong>Description:</strong> {classItem.description}</p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
