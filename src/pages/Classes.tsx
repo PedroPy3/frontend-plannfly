@@ -13,19 +13,18 @@ import DashboardLayout from '@/components/DashboardLayout';
 const ClassesContent = () => {
   const { toast } = useToast();
 
-  const { data: summaryData, isLoading, isError, error } = useQuery({
+  const { data: classes = [], isLoading, isError, error } = useQuery({
     queryKey: ['classes-summary'],
     queryFn: () => api.get('/classes/summary'),
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3,
   });
 
-  const classes = summaryData?.classes || [];
-  const stats = summaryData?.stats || {
-    totalClasses: 0,
-    totalStudents: 0,
-    avgDuration: 0,
-    thisWeekSessions: 0
+  const stats = {
+    totalClasses: classes.length,
+    totalStudents: classes.reduce((sum: number, c: any) => sum + (c.students || 0), 0),
+    avgDuration: classes.length > 0 ? Math.round(classes.reduce((sum: number, c: any) => sum + (c.duration || 0), 0) / classes.length) : 0,
+    thisWeekSessions: classes.reduce((sum: number, c: any) => sum + (c.scheduledSessions || 0), 0)
   };
 
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
