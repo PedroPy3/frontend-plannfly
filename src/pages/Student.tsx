@@ -18,8 +18,10 @@ const Students = () => {
   const navigate = useNavigate();
 
   const { data: students = [], isLoading, isError } = useQuery({
-    queryKey: ['students'],
-    queryFn: () => api.get('/students'),
+    queryKey: ['students-summary'],
+    queryFn: () => api.get('/students/summary'),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 3,
   });
 
   if (isError) {
