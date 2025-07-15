@@ -13,12 +13,20 @@ import DashboardLayout from '@/components/DashboardLayout';
 const ClassesContent = () => {
   const { toast } = useToast();
 
-  const { data: classes = [], isLoading, isError, error } = useQuery({
-    queryKey: ['classes'],
-    queryFn: () => api.get('/classes/all'),
+  const { data: summaryData, isLoading, isError, error } = useQuery({
+    queryKey: ['classes-summary'],
+    queryFn: () => api.get('/classes/summary'),
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3,
   });
+
+  const classes = summaryData?.classes || [];
+  const stats = summaryData?.stats || {
+    totalClasses: 0,
+    totalStudents: 0,
+    avgDuration: 0,
+    thisWeekSessions: 0
+  };
 
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const [selectedClass, setSelectedClass] = useState<any | null>(null);
@@ -136,7 +144,7 @@ const ClassesContent = () => {
               <BookOpenIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{classes.length}</div>
+              <div className="text-2xl font-bold">{stats.totalClasses}</div>
               <p className="text-xs text-muted-foreground">
                 {classes.filter((c: any) => c.status === 'active').length} active
               </p>
@@ -149,9 +157,7 @@ const ClassesContent = () => {
               <UsersIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {classes.reduce((sum: number, c: any) => sum + (c.students || 0), 0)}
-              </div>
+              <div className="text-2xl font-bold">{stats.totalStudents}</div>
               <p className="text-xs text-muted-foreground">Across all classes</p>
             </CardContent>
           </Card>
@@ -162,7 +168,7 @@ const ClassesContent = () => {
               <ClockIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">52 min</div>
+              <div className="text-2xl font-bold">{stats.avgDuration} min</div>
               <p className="text-xs text-muted-foreground">Per class session</p>
             </CardContent>
           </Card>
@@ -173,7 +179,7 @@ const ClassesContent = () => {
               <CalendarIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">15</div>
+              <div className="text-2xl font-bold">{stats.thisWeekSessions}</div>
               <p className="text-xs text-muted-foreground">Scheduled sessions</p>
             </CardContent>
           </Card>
