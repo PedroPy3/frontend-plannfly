@@ -12,12 +12,27 @@ const TopBar: React.FC<TopBarProps> = ({ isSidebarCollapsed }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear all cookies
-    document.cookie.split(";").forEach((c) => {
-      const eqPos = c.indexOf("=");
-      const name = eqPos > -1 ? c.substr(0, eqPos) : c;
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    console.log('Logout button clicked');
+    
+    // Clear all cookies more thoroughly
+    const cookies = document.cookie.split(";");
+    console.log('Current cookies:', cookies);
+    
+    cookies.forEach((cookie) => {
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+      
+      // Clear for current path and domain
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.${window.location.hostname}`;
     });
+    
+    // Clear localStorage and sessionStorage as well
+    localStorage.clear();
+    sessionStorage.clear();
+    
+    console.log('Cookies cleared, redirecting to login');
     
     // Redirect to login
     navigate('/login');
