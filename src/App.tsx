@@ -15,6 +15,7 @@ import Error500 from "./pages/Error500";
 import Classes from "./pages/Classes";
 import DashboardPage from './pages/DashboardPage';
 import Students from "./pages/Student";
+import StudentSubscriptions from "./pages/StudentSubscriptions";
 
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
           <Route path = "/NotFound"element={<NotFound />} />
           <Route path="/classes" element={<Classes />} />
           <Route path="/Students" element={<Students />} />
+          <Route path="/student-subscriptions" element={<StudentSubscriptions />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
