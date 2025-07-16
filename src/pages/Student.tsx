@@ -1,12 +1,14 @@
+
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import StatsCard from '@/components/StatsCard';
+import LoadingSkeleton from '@/components/LoadingSkeleton';
+import ErrorDisplay from '@/components/ErrorDisplay';
+import StudentCard from '@/components/StudentCard';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { UsersIcon, SearchIcon, UserIcon, SettingsIcon } from 'lucide-react';
+import { UsersIcon, SearchIcon, UserIcon } from 'lucide-react';
 import StudentManagementDialog from '@/components/StudentManagementDialog';
 import { api } from '@/lib/api';
 
@@ -20,13 +22,25 @@ const Students = () => {
   const { data: students = [], isLoading, isError } = useQuery({
     queryKey: ['students-summary'],
     queryFn: () => api.get('/students/summary'),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
     retry: 3,
   });
 
   if (isError) {
     navigate('/session-expired');
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <LoadingSkeleton 
+          title="Students" 
+          description="Manage and view all your students" 
+          statsCount={3}
+        />
+      </DashboardLayout>
+    );
   }
 
   const filteredStudents = students.filter((student: any) =>
@@ -38,6 +52,11 @@ const Students = () => {
   const activeStudents = students.filter((s: any) => s.status === 'Active').length;
   const totalEnrollments = students.reduce((sum: number, s: any) => sum + s.enrolledClasses, 0);
 
+  const handleManageStudent = (student: any) => {
+    setSelectedStudent(student);
+    setIsManagementDialogOpen(true);
+  };
+
   return (
     <DashboardLayout>
       <div className="p-6">
@@ -45,35 +64,21 @@ const Students = () => {
           <h1 className="text-2xl font-bold mb-6">Students</h1>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <Card>
-              <CardHeader className="flex justify-between items-center pb-2">
-                <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-                <UsersIcon className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalStudents}</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex justify-between items-center pb-2">
-                <CardTitle className="text-sm font-medium">Active Students</CardTitle>
-                <UserIcon className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{activeStudents}</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex justify-between items-center pb-2">
-                <CardTitle className="text-sm font-medium">Total Enrollments</CardTitle>
-                <UsersIcon className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalEnrollments}</div>
-              </CardContent>
-            </Card>
+            <StatsCard
+              title="Total Students"
+              value={totalStudents}
+              icon={UsersIcon}
+            />
+            <StatsCard
+              title="Active Students"
+              value={activeStudents}
+              icon={UserIcon}
+            />
+            <StatsCard
+              title="Total Enrollments"
+              value={totalEnrollments}
+              icon={UsersIcon}
+            />
           </div>
 
           <div className="mb-6">
@@ -91,48 +96,11 @@ const Students = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredStudents.map((student: any) => (
-              <Card key={student.id} className="hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-plannfly-100 rounded-full flex items-center justify-center">
-                        <UserIcon className="h-5 w-5 text-plannfly-700" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg">{student.name}</CardTitle>
-                        <p className="text-sm text-gray-600">{student.email}</p>
-                      </div>
-                    </div>
-                    <Badge
-                      variant={student.status === 'Active' ? 'default' : 'secondary'}
-                      className={student.status === 'Active'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'}
-                    >
-                      {student.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>Enrolled Classes:</span>
-                      <span className="font-semibold">{student.enrolledClasses}</span>
-                    </div>
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>Join Date:</span>
-                      <span>{student.joinDate}</span>
-                    </div>
-                  </div>
-                  <Button className="w-full" onClick={() => {
-                    setSelectedStudent(student);
-                    setIsManagementDialogOpen(true);
-                  }}>
-                    <SettingsIcon className="h-4 w-4 mr-2" />
-                    Manage Student
-                  </Button>
-                </CardContent>
-              </Card>
+              <StudentCard
+                key={student.id}
+                student={student}
+                onManage={handleManageStudent}
+              />
             ))}
           </div>
 
