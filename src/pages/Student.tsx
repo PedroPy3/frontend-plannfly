@@ -6,14 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { UsersIcon, SearchIcon, UserIcon, SettingsIcon } from 'lucide-react';
+import { UsersIcon, SearchIcon, UserIcon, SettingsIcon, PlusIcon } from 'lucide-react';
 import StudentManagementDialog from '@/components/StudentManagementDialog';
+import AddStudentModal from '@/components/AddStudentModal';
 import { api } from '@/lib/api';
 
 const Students = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStudent, setSelectedStudent] = useState<any | null>(null);
   const [isManagementDialogOpen, setIsManagementDialogOpen] = useState(false);
+  const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -42,7 +44,13 @@ const Students = () => {
     <DashboardLayout>
       <div className="p-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl font-bold mb-6">Students</h1>
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold">Students</h1>
+            <Button onClick={() => setIsAddStudentModalOpen(true)}>
+              <PlusIcon className="h-4 w-4 mr-2" />
+              Add New Student
+            </Button>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <Card>
@@ -149,6 +157,11 @@ const Students = () => {
         onClose={() => setIsManagementDialogOpen(false)}
         student={selectedStudent}
         onStudentUpdated={() => console.log('Refetch data aqui')}
+      />
+
+      <AddStudentModal
+        isOpen={isAddStudentModalOpen}
+        onClose={() => setIsAddStudentModalOpen(false)}
       />
     </DashboardLayout>
   );
