@@ -17,6 +17,7 @@ import Teachers from "./pages/Teachers";
 import DashboardPage from './pages/DashboardPage';
 import Students from "./pages/Student";
 import StudentSubscriptions from "./pages/StudentSubscriptions";
+import MySubscriptionPage from "./pages/MySubscriptionPage";
 import Schedule from "./pages/Schedule";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
+          <Route path="/my-subscription" element={<MySubscriptionPage />} />
           <Route path="/checkout/:subscriptionId" element={<CheckoutPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/session-expired" element={<SessionExpired />} />
