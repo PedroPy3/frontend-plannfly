@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Calendar, dateFns } from 'react-big-calendar';
-import { format, startOfMonth, endOfMonth, parseISO } from 'date-fns';
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
+import { format, parse, startOfWeek, getDay, parseISO } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 import { Plus } from 'lucide-react';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,15 @@ import { useToast } from '@/hooks/use-toast';
 import ScheduleEventModal from '@/components/ScheduleEventModal';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-const localizer = dateFns();
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales: {
+    'en-US': enUS,
+  },
+});
 
 interface Class {
   id: string;
