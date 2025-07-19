@@ -12,7 +12,7 @@ interface Class {
   id: number;
   name: string;
   schedule: string;
-  teacher: string;
+  instructor: string;
   isEnrolled: boolean;
 }
 
@@ -26,12 +26,12 @@ interface ClassSelectionModalProps {
 
 // TODO: Replace with actual API call
 const MOCK_AVAILABLE_CLASSES: Class[] = [
-  { id: 1, name: "Mathematics", schedule: "Mon, Wed, Fri 9:00 AM", teacher: "Dr. Smith", isEnrolled: true },
-  { id: 2, name: "Physics", schedule: "Tue, Thu 2:00 PM", teacher: "Prof. Johnson", isEnrolled: true },
-  { id: 3, name: "Chemistry", schedule: "Mon, Wed 11:00 AM", teacher: "Dr. Brown", isEnrolled: false },
-  { id: 4, name: "Biology", schedule: "Tue, Thu 10:00 AM", teacher: "Prof. Davis", isEnrolled: false },
-  { id: 5, name: "History", schedule: "Wed, Fri 1:00 PM", teacher: "Dr. Wilson", isEnrolled: false },
-  { id: 6, name: "English", schedule: "Mon, Wed, Fri 2:00 PM", teacher: "Prof. Miller", isEnrolled: false },
+  { id: 1, name: "Mathematics", schedule: "Mon, Wed, Fri 9:00 AM", instructor: "Dr. Smith", isEnrolled: true },
+  { id: 2, name: "Physics", schedule: "Tue, Thu 2:00 PM", instructor: "Prof. Johnson", isEnrolled: true },
+  { id: 3, name: "Chemistry", schedule: "Mon, Wed 11:00 AM", instructor: "Dr. Brown", isEnrolled: false },
+  { id: 4, name: "Biology", schedule: "Tue, Thu 10:00 AM", instructor: "Prof. Davis", isEnrolled: false },
+  { id: 5, name: "History", schedule: "Wed, Fri 1:00 PM", instructor: "Dr. Wilson", isEnrolled: false },
+  { id: 6, name: "English", schedule: "Mon, Wed, Fri 2:00 PM", instructor: "Prof. Miller", isEnrolled: false },
 ];
 
 const ClassSelectionModal = ({ isOpen, onClose, studentId, studentName, onClassesUpdated }: ClassSelectionModalProps) => {
@@ -111,7 +111,7 @@ const ClassSelectionModal = ({ isOpen, onClose, studentId, studentName, onClasse
                             {classItem.schedule}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            Teacher: {classItem.teacher}
+                            Instructor: {classItem.instructor}
                           </p>
                         </div>
                       </div>
@@ -149,7 +149,7 @@ const ClassSelectionModal = ({ isOpen, onClose, studentId, studentName, onClasse
                             {classItem.schedule}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            Teacher: {classItem.teacher}
+                            Instructor: {classItem.instructor}
                           </p>
                         </div>
                       </div>

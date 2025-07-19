@@ -12,7 +12,7 @@ import StudentManagementModal from './StudentManagementModal';
 interface ClassData {
   id: number;
   name: string;
-  teacher: string;
+  instructor: string;
   students: number;
   duration: string;
   schedule: string;
@@ -41,7 +41,7 @@ const DURATION_OPTIONS = [
 ];
 
 // TODO: Replace with actual API call
-const MOCK_TEACHERS = [
+const MOCK_INSTRUCTORS = [
   { id: 1, name: "Sarah Johnson" },
   { id: 2, name: "Michael Chen" },
   { id: 3, name: "Emily Rodriguez" },
@@ -126,18 +126,18 @@ const ClassEditDialog = ({ classData, isOpen, onClose, onSave }: ClassEditDialog
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Teacher</label>
+                  <label className="block text-sm font-medium mb-2">Instructor</label>
                   <Select
-                    value={editedClass.teacher}
-                    onValueChange={(value) => handleInputChange('teacher', value)}
+                    value={editedClass.instructor}
+                    onValueChange={(value) => handleInputChange('instructor', value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a teacher" />
+                      <SelectValue placeholder="Select an instructor" />
                     </SelectTrigger>
                     <SelectContent>
-                      {MOCK_TEACHERS.map((teacher) => (
-                        <SelectItem key={teacher.id} value={teacher.name}>
-                          {teacher.name}
+                      {MOCK_INSTRUCTORS.map((instructor) => (
+                        <SelectItem key={instructor.id} value={instructor.name}>
+                          {instructor.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

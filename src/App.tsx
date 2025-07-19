@@ -13,7 +13,7 @@ import NotFound from "./pages/NotFound";
 import SessionExpired from "./pages/SessionExpired";
 import Error500 from "./pages/Error500";
 import Classes from "./pages/Classes";
-import Teachers from "./pages/Teachers";
+import Instructors from "./pages/Instructors";
 import DashboardPage from './pages/DashboardPage';
 import Students from "./pages/Student";
 import StudentSubscriptions from "./pages/StudentSubscriptions";
@@ -40,7 +40,7 @@ const App = () => (
           <Route path="/internal-error" element={<Error500 />} />
           <Route path="/NotFound" element={<NotFound />} />
           <Route path="/classes" element={<Classes />} />
-          <Route path="/teachers" element={<Teachers />} />
+          <Route path="/instructors" element={<Instructors />} />
           <Route path="/Students" element={<Students />} />
           <Route path="/student-subscriptions" element={<StudentSubscriptions />} />
           <Route path="/schedule" element={<Schedule />} />

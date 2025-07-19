@@ -34,7 +34,7 @@ const DashboardPage = () => {
             {[
               { title: 'Classes', count: data.classes },
               { title: 'Active Students', count: data.students },
-              { title: 'Teachers', count: data.teachers },
+              { title: 'Instructors', count: data.instructors },
             ].map((item, index) => (
               <div key={index} className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-sm font-medium text-gray-500 uppercase">{item.title}</h3>

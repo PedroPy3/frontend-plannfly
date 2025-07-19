@@ -19,7 +19,7 @@ interface Student {
   enrolledClasses: number;
   status: "Active" | "Inactive";
   joinDate: string;
-  enrolledClassesList: Array<{ id: number; name: string; schedule: string; teacher?: string }>;
+  enrolledClassesList: Array<{ id: number; name: string; schedule: string; instructor?: string }>;
 }
 
 interface StudentManagementDialogProps {
@@ -31,9 +31,9 @@ interface StudentManagementDialogProps {
 
 // TODO: Replace with actual API call
 const MOCK_ENROLLED_CLASSES = [
-  { id: 1, name: "Mathematics", schedule: "Mon, Wed, Fri 9:00 AM", teacher: "Dr. Smith" },
-  { id: 2, name: "Physics", schedule: "Tue, Thu 2:00 PM", teacher: "Prof. Johnson" },
-  { id: 3, name: "Chemistry", schedule: "Mon, Wed 11:00 AM", teacher: "Dr. Brown" },
+  { id: 1, name: "Mathematics", schedule: "Mon, Wed, Fri 9:00 AM", instructor: "Dr. Smith" },
+  { id: 2, name: "Physics", schedule: "Tue, Thu 2:00 PM", instructor: "Prof. Johnson" },
+  { id: 3, name: "Chemistry", schedule: "Mon, Wed 11:00 AM", instructor: "Dr. Brown" },
 ];
 
 const StudentManagementDialog = ({ isOpen, onClose, student, onStudentUpdated }: StudentManagementDialogProps) => {
@@ -224,9 +224,9 @@ const StudentManagementDialog = ({ isOpen, onClose, student, onStudentUpdated }:
                               <CalendarIcon className="h-3 w-3 inline mr-1" />
                               {classItem.schedule}
                             </p>
-                            {classItem.teacher && (
+                            {classItem.instructor && (
                               <p className="text-sm text-muted-foreground">
-                                Teacher: {classItem.teacher}
+                                Instructor: {classItem.instructor}
                               </p>
                             )}
                           </div>
