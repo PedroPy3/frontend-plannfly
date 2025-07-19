@@ -289,7 +289,7 @@ const ClassesContent = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 text-sm text-muted-foreground">
-                      <p><strong>Teacher:</strong> {classItem.teacher || '—'}</p>
+                      <p><strong>Instructor:</strong> {classItem.instructor || '—'}</p>
                       <p><strong>Students:</strong> {classItem.students || 0}</p>
                       <p><strong>Date:</strong> {
                         classItem.date 

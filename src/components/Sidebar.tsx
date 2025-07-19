@@ -22,7 +22,7 @@ const Sidebar = () => {
     { name: 'Students', icon: UsersIcon, link: '/students' },
     { name: 'Subscriptions', icon: CreditCardIcon, link: '/student-subscriptions' },
     { name: 'Schedule', icon: CalendarIcon, link: '/schedule' },
-    { name: 'Teachers', icon: UserIcon, link: '/teachers' },
+    { name: 'Instructors', icon: UserIcon, link: '/instructors' },
   ];
 
   const bottomNavItems = [

@@ -1,8 +1,10 @@
 
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { SettingsIcon, LogOutIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
+import { api } from '@/lib/api';
 
 interface TopBarProps {
   isSidebarCollapsed: boolean;
@@ -10,6 +12,11 @@ interface TopBarProps {
 
 const TopBar: React.FC<TopBarProps> = ({ isSidebarCollapsed }) => {
   const navigate = useNavigate();
+  
+  const { data: customerData, isLoading } = useQuery({
+    queryKey: ['customer-name'],
+    queryFn: () => api.get('/customer/name'),
+  });
 
   const handleLogout = () => {
     console.log('Logout button clicked');
@@ -50,7 +57,9 @@ const TopBar: React.FC<TopBarProps> = ({ isSidebarCollapsed }) => {
       <div className="flex-1" /> {/* Spacer */}
       
       <div className="flex items-center space-x-4">
-        <span className="text-sm font-medium hidden sm:inline-block">Alex Johnson</span>
+        <span className="text-sm font-medium hidden sm:inline-block">
+          {isLoading ? 'Loading...' : (customerData?.name || 'User')}
+        </span>
         <button className="p-1.5 hover:bg-gray-100 rounded-full" aria-label="Settings">
           <SettingsIcon size={20} />
         </button>
