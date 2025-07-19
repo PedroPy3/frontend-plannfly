@@ -16,6 +16,7 @@ import Classes from "./pages/Classes";
 import DashboardPage from './pages/DashboardPage';
 import Students from "./pages/Student";
 import StudentSubscriptions from "./pages/StudentSubscriptions";
+import { AuthGuard } from "./lib/AuthGuard";
 
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+      <AuthGuard>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
@@ -43,6 +45,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </AuthGuard>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
